@@ -8,8 +8,7 @@ license = "Apache-2.0"
 [tool.poetry.dependencies]
 python = ">=3.13,<4"
 cdiserrors = "*"
-# `gen3logging` is the renamed `cdislogging`; the repository still has the old name.
-gen3logging = { git = "https://github.com/uc-cdis/cdislogging.git", rev = "feat/json" }
+gen3logging = ">=2.0.0"
 # unless this library explicitly uses features known only to a library version
 # above a certain version, allow flexibility for consumers of this library to
 # limit the version as necessary
@@ -39,7 +38,7 @@ starlette = { version = "*", optional = true }
 pytest = "*"
 pytest-flask = "*"
 mock = "*"
-deptry = "^0.24.0"
+deptry = ">=0.24.0"
 cryptography = "*"
 # fastapi.testclient needs it; the fastapi core distribution does not pull it in.
 httpx = "*"
