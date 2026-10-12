@@ -9,8 +9,8 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from starlette.responses import StreamingResponse
 
-from cdispyutils.metrics import BaseMetrics
-from cdispyutils.observability.request_metrics import add_request_metrics_middleware
+from gen3pyutils.metrics import BaseMetrics
+from gen3pyutils.observability.request_metrics import add_request_metrics_middleware
 
 COUNTER_NAME = "test_api_requests"
 HISTOGRAM_NAME = "test_api_request_duration_seconds"

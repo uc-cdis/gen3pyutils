@@ -9,14 +9,14 @@ HMACv4 for HTTP requests. Implements header-based authentication only
 Basic usage on server side to verify the requests.
 -----------
 >>> from flask import request
->>> from cdispyutils.hmac4 import verify_hmac
+>>> from gen3pyutils.hmac4 import verify_hmac
 >>> def get_secret_key(access_key):
 >>>   return 'secret_key_from_db'
 >>> verify_hmac(request, 'submission', get_secret_key)
 
 Basic usage on client side to sign the request
 -----------
->>> from cdispyutils.hmac4 import get_auth
+>>> from gen3pyutils.hmac4 import get_auth
 >>> import requests
 >>> auth = get_auth(access_key, secret_key, 'submission')
 >>> endpoint = 'link.to.service'
@@ -25,7 +25,7 @@ Basic usage on client side to sign the request
 """
 
 import datetime
-import cdispyutils.constants as constants
+import gen3pyutils.constants as constants
 
 from .hmac4_signing_key import HMAC4SigningKey
 from .hmac4_auth import HMAC4Auth

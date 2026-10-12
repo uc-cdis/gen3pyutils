@@ -1,4 +1,4 @@
-# cdispyutils
+# gen3pyutils
 
 This package includes several utility Python tools for the Gen3 stack. It is meant to be imported as a means to access
 supplementary tools and resources that are reusable and not exclusive to any specific repo we use. 
@@ -13,12 +13,12 @@ supplementary tools and resources that are reusable and not exclusive to any spe
 OpenTelemetry tracing, Pyroscope continuous profiling, and cardinality-safe request metrics for
 FastAPI services. Requires the `observability` extra.
 
-See https://github.com/uc-cdis/cdis-python-utils/tree/master/cdispyutils/observability
+See https://github.com/uc-cdis/gen3pyutils/tree/master/gen3pyutils/observability
 
 
 ## profiling
 
-See https://github.com/uc-cdis/cdis-python-utils/tree/master/cdispyutils/profiling
+See https://github.com/uc-cdis/gen3pyutils/tree/master/gen3pyutils/profiling
 
 
 ## uwsgi
@@ -63,7 +63,7 @@ An example NGINX config looks like this:
     location / {
         ## GEN3_REQUEST_TIMESTAMP and GEN3_TIMEOUT_SECONDS
         # These two together aligns the HARAKIRI timeout in uWSGI with NGINX
-        # See also https://github.com/uc-cdis/cdis-python-utils#uwsgi
+        # See also https://github.com/uc-cdis/gen3pyutils#uwsgi
         uwsgi_param GEN3_REQUEST_TIMESTAMP $msec;
         uwsgi_param GEN3_TIMEOUT_SECONDS '20';
 
@@ -78,7 +78,7 @@ An example NGINX config looks like this:
 In your Flask application, install this extension:
 
 ```python
-from cdispyutils.uwsgi import setup_user_harakiri
+from gen3pyutils.uwsgi import setup_user_harakiri
 
 setup_user_harakiri(app)
 ```

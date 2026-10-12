@@ -6,7 +6,7 @@ import datetime
 import re
 import shlex
 import posixpath
-import cdispyutils.constants as constants
+import gen3pyutils.constants as constants
 import copy
 
 

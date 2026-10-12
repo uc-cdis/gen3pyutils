@@ -1,6 +1,6 @@
 from requests.auth import AuthBase
 from .hmac4_auth_generator import sign_request
-import cdispyutils.constants as constants
+import gen3pyutils.constants as constants
 import datetime
 
 
@@ -14,7 +14,7 @@ class HMAC4Auth(AuthBase):
 
     Basic usage on client side to sign the request
     -----------
-    >>> from cdispyutils.hmac4.hmac4_signing_key import HMAC4SigningKey
+    >>> from gen3pyutils.hmac4.hmac4_signing_key import HMAC4SigningKey
     >>> import requests
     >>> sig_key = HMAC4SigningKey(secret_key, service)
     >>> auth = HMAC4Auth(access_key, sig_key)

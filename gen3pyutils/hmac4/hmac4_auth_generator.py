@@ -1,5 +1,5 @@
 import hashlib
-import cdispyutils.constants as constants
+import gen3pyutils.constants as constants
 from . import hmac4_auth_parser as hmac4_parser
 import hmac
 from urllib.parse import urlparse, parse_qs, quote, unquote

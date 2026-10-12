@@ -3,7 +3,7 @@ import mock
 import pytest
 import time
 
-from cdispyutils import uwsgi
+from gen3pyutils import uwsgi
 
 
 @pytest.fixture

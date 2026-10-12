@@ -6,10 +6,10 @@ import datetime
 import sys
 import re
 import hashlib
-from cdispyutils.hmac4.hmac4_auth import HMAC4Auth
-from cdispyutils.hmac4.hmac4_signing_key import HMAC4SigningKey
-from cdispyutils.hmac4.hmac4_auth_generator import encode_body
-from cdispyutils.hmac4 import generate_aws_presigned_url
+from gen3pyutils.hmac4.hmac4_auth import HMAC4Auth
+from gen3pyutils.hmac4.hmac4_signing_key import HMAC4SigningKey
+from gen3pyutils.hmac4.hmac4_auth_generator import encode_body
+from gen3pyutils.hmac4 import generate_aws_presigned_url
 from urllib.parse import urlparse, quote_plus, quote
 
 import requests

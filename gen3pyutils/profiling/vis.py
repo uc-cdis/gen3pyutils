@@ -5,7 +5,8 @@ import os
 import pstats
 
 import matplotlib
-matplotlib.use('TkAgg')
+
+matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 import numpy as np
@@ -53,7 +54,7 @@ class StatsCollection(object):
 class ProfilePlotter(object):
     """
     Generate plots loaded from some profiling output previously recorded by a
-    ``cdispyutils.profiling.Profiler``.
+    ``gen3pyutils.profiling.Profiler``.
     """
 
     def __init__(self, directory="profile"):
@@ -167,11 +168,11 @@ def _aggregate_profiler_filename(filename):
     """
     The Profiler class outputs files names like this:
 
-        cdispyutils.profiling.vis._aggregate_profiler_filename-1.prof
+        gen3pyutils.profiling.vis._aggregate_profiler_filename-1.prof
 
     For the plotter we want to keep only this part for the names:
 
-        cdispyutils.profiling.vis._aggregate_profiler_filename
+        gen3pyutils.profiling.vis._aggregate_profiler_filename
     """
     return filename.split("-")[0]
 

@@ -7,7 +7,7 @@ import textwrap
 from prometheus_client import Counter, Gauge, Histogram
 from unittest.mock import patch, MagicMock
 
-from cdispyutils.metrics import BaseMetrics
+from gen3pyutils.metrics import BaseMetrics
 
 
 @pytest.fixture
@@ -154,7 +154,7 @@ def test_metrics_are_written_for_multiprocess_collection(prometheus_dir):
     """
     source = textwrap.dedent(
         f"""
-        from cdispyutils.metrics import BaseMetrics
+        from gen3pyutils.metrics import BaseMetrics
 
         metrics = BaseMetrics(enabled=True, prometheus_dir={prometheus_dir!r})
         metrics.increment_counter("subprocess_counter", {{"label1": "value1"}})

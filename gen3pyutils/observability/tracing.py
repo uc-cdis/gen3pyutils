@@ -30,9 +30,9 @@ from opentelemetry.sdk.trace.export import (
     SpanExporter,
 )
 
-from cdispyutils.observability._config import env_bool, env_str, resolve
-from cdispyutils.observability.constants import DEFAULT_ENDPOINTS_WITHOUT_METRICS
-from cdispyutils.observability.continuous_profiling import profiling_active
+from gen3pyutils.observability._config import env_bool, env_str, resolve
+from gen3pyutils.observability.constants import DEFAULT_ENDPOINTS_WITHOUT_METRICS
+from gen3pyutils.observability.continuous_profiling import profiling_active
 
 logger = get_logger(__name__)
 
@@ -85,7 +85,7 @@ def configure_tracing(
 
     When the Pyroscope agent is already running, spans are also tagged so Grafana can jump from a
     span to the profile for that request. Call
-    `cdispyutils.observability.continuous_profiling.configure_profiling` first, otherwise this
+    `gen3pyutils.observability.continuous_profiling.configure_profiling` first, otherwise this
     cannot know the agent exists and the link is left out.
 
     Args:

@@ -15,8 +15,8 @@ from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanE
 from opentelemetry.trace import StatusCode
 from opentelemetry.util.http import parse_excluded_urls
 
-from cdispyutils.observability.constants import DEFAULT_ENDPOINTS_WITHOUT_METRICS
-from cdispyutils.observability.tracing import (
+from gen3pyutils.observability.constants import DEFAULT_ENDPOINTS_WITHOUT_METRICS
+from gen3pyutils.observability.tracing import (
     configure_tracing,
     excluded_url_patterns,
     get_tracer,
@@ -236,7 +236,7 @@ def test_instrument_module_leaves_generators_alone(spans):
 def test_no_trace_excludes_a_function(spans):
     """A function marked no_trace is skipped by the module walk."""
     module = build_module(
-        "from cdispyutils.observability.tracing import no_trace\n"
+        "from gen3pyutils.observability.tracing import no_trace\n"
         "@no_trace\n"
         "def skipped():\n"
         "    return 1\n"

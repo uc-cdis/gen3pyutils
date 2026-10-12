@@ -13,8 +13,8 @@ from fastapi import FastAPI
 from starlette.requests import Request
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
-from cdispyutils.metrics import AbstractBaseMetrics
-from cdispyutils.observability.constants import (
+from gen3pyutils.metrics import AbstractBaseMetrics
+from gen3pyutils.observability.constants import (
     DEFAULT_ENDPOINTS_WITHOUT_METRICS,
     UNKNOWN_LABEL_VALUE,
     UNMATCHED_PATH,

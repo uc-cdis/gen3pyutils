@@ -7,8 +7,8 @@ import flask
 import pytest
 import requests
 
-from cdispyutils.auth.errors import JWTValidationError, JWTAudienceError
-from cdispyutils.auth.jwt_validation import (
+from gen3pyutils.auth.errors import JWTValidationError, JWTAudienceError
+from gen3pyutils.auth.jwt_validation import (
     get_public_key_for_kid,
     require_jwt,
     validate_jwt,

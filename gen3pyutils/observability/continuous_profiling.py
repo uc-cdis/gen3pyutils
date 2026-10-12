@@ -10,7 +10,7 @@ from collections.abc import Mapping
 import pyroscope
 from gen3logging import get_logger
 
-from cdispyutils.observability._config import env_bool, env_int, env_str, resolve
+from gen3pyutils.observability._config import env_bool, env_int, env_str, resolve
 
 logger = get_logger(__name__)
 
@@ -40,7 +40,7 @@ def configure_profiling(
 
     Does nothing when profiling is disabled, when no server address is configured, or when the
     agent is already running in this process. Call this before
-    `cdispyutils.observability.tracing.configure_tracing`, which asks `profiling_active` whether
+    `gen3pyutils.observability.tracing.configure_tracing`, which asks `profiling_active` whether
     to link spans to profiles.
 
     Every argument left as None is read from the environment variable named beside it below, so a

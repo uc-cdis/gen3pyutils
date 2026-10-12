@@ -12,7 +12,7 @@ import mock
 import pytest
 import requests
 
-from cdispyutils import auth
+from gen3pyutils import auth
 
 
 USER_API = "https://user-api.test.net"

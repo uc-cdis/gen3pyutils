@@ -3,7 +3,7 @@
 Tracing, continuous profiling, and request metrics for Gen3 FastAPI services.
 
 ```bash
-poetry add 'cdispyutils[observability]'
+poetry add 'gen3pyutils[observability]'
 ```
 
 Four signals and how they leave the process:
@@ -24,10 +24,10 @@ Order matters: `configure_profiling` runs first, because `configure_tracing` onl
 profiles when it can see that an agent is already running.
 
 ```python
-from cdispyutils.metrics import BaseMetrics
-from cdispyutils.observability.continuous_profiling import configure_profiling
-from cdispyutils.observability.request_metrics import add_request_metrics_middleware
-from cdispyutils.observability.tracing import configure_tracing, instrument_class
+from gen3pyutils.metrics import BaseMetrics
+from gen3pyutils.observability.continuous_profiling import configure_profiling
+from gen3pyutils.observability.request_metrics import add_request_metrics_middleware
+from gen3pyutils.observability.tracing import configure_tracing, instrument_class
 
 
 def get_app() -> FastAPI:
@@ -61,7 +61,7 @@ differs per service:
 from opentelemetry.instrumentation.botocore import BotocoreInstrumentor
 from opentelemetry.instrumentation.httpx import HTTPXClientInstrumentor
 
-from cdispyutils.observability.tracing import LoggingInstrumentorWithContext
+from gen3pyutils.observability.tracing import LoggingInstrumentorWithContext
 
 configure_tracing(
     app,

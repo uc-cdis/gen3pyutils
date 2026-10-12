@@ -4,8 +4,8 @@ Tests for the Pyroscope continuous-profiling lifecycle.
 
 import pytest
 
-from cdispyutils.observability import continuous_profiling
-from cdispyutils.observability.continuous_profiling import (
+from gen3pyutils.observability import continuous_profiling
+from gen3pyutils.observability.continuous_profiling import (
     configure_profiling,
     profiling_active,
     stop_profiling,
