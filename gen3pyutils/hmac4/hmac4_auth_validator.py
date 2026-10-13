@@ -2,7 +2,7 @@
 # http://opensource.org/licenses/MIT
 
 import datetime
-import cdispyutils.constants as constants
+import gen3pyutils.constants as constants
 import re
 
 from . import hmac4_auth_parser as parser

@@ -1,4 +1,4 @@
-# `cdis-python-utils` Changelog
+# `gen3pyutils` Changelog
 
 ## 0.2.0 (2017-12-20)
 
@@ -13,4 +13,4 @@
 - Added `PyJWT==1.5.3`
 - Added `cryptography==2.1.2`
 
-[#15]: https://github.com/uc-cdis/cdis-python-utils/pull/15
+[#15]: https://github.com/uc-cdis/gen3pyutils/pull/15
