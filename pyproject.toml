@@ -24,7 +24,7 @@ opentelemetry-api = { version = "*", optional = true }
 opentelemetry-sdk = { version = "*", optional = true }
 opentelemetry-exporter-otlp = { version = "*", optional = true }
 opentelemetry-instrumentation-fastapi = { version = "*", optional = true }
-opentelemetry-instrumentation-httpx = { version = "*", optional = true }
+opentelemetry-instrumentation-httpx = { version = ">=0.66b1", optional = true }
 opentelemetry-instrumentation-requests = { version = "*", optional = true }
 opentelemetry-instrumentation-logging = { version = "*", optional = true }
 opentelemetry-instrumentation-asyncpg = { version = "*", optional = true }
