@@ -347,11 +347,21 @@ def _resolve_instrumentors(
     from opentelemetry.instrumentation.httpx import HTTPXClientInstrumentor
     from opentelemetry.instrumentation.requests import RequestsInstrumentor
 
-    return [
+    defaults: list[Instrumentor] = [
         HTTPXClientInstrumentor(),
         RequestsInstrumentor(),
         LoggingInstrumentorWithContext(),
     ]
+    # httpx2 is a separate distribution from httpx; only add its instrumentor when it is
+    # installed, otherwise HTTPX2ClientInstrumentor.instrument() logs an error at startup.
+    try:
+        import httpx2 as _httpx2  # noqa: F401
+        from opentelemetry.instrumentation.httpx import HTTPX2ClientInstrumentor
+
+        defaults.append(HTTPX2ClientInstrumentor())
+    except ImportError:
+        pass
+    return defaults
 
 
 class LoggingInstrumentorWithContext:
