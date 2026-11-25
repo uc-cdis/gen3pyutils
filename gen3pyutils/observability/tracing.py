@@ -6,6 +6,7 @@ Requires the `observability` extra.
 
 import functools
 import inspect
+import os
 import re
 from collections.abc import Collection, Iterable
 from types import FunctionType, ModuleType
@@ -13,7 +14,7 @@ from typing import Any, Protocol, cast
 
 from gen3logging import get_logger
 from fastapi import FastAPI
-from opentelemetry import trace
+from opentelemetry import propagate, trace
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import (
     OTLPSpanExporter as GrpcSpanExporter,
 )
@@ -29,6 +30,8 @@ from opentelemetry.sdk.trace.export import (
     ConsoleSpanExporter,
     SpanExporter,
 )
+from opentelemetry.sdk.trace.sampling import ALWAYS_ON, ParentBased
+from opentelemetry.trace.propagation.tracecontext import TraceContextTextMapPropagator
 
 from gen3pyutils.observability._config import env_bool, env_str, resolve
 from gen3pyutils.observability.constants import DEFAULT_ENDPOINTS_WITHOUT_METRICS
@@ -105,6 +108,21 @@ def configure_tracing(
             alongside the app's own. Defaults to HTTPX, requests, and logging. Database
             instrumentation is not included, because the right one differs per service; pass
             `AsyncPGInstrumentor()` or the equivalent to add it.
+
+    Propagator:
+        Unless ``OTEL_PROPAGATORS`` is set, the global textmap is replaced with
+        ``TraceContextTextMapPropagator`` (W3C trace context only). The SDK default also
+        extracts ``baggage:`` headers, which the FastAPI instrumentation then injects onto
+        every outbound request — including upstream third-party services. Services that need
+        baggage can opt back in by setting ``OTEL_PROPAGATORS``.
+
+    Sampler:
+        Unless ``OTEL_TRACES_SAMPLER`` is set, the provider uses
+        ``ParentBased(root=ALWAYS_ON, remote_parent_not_sampled=ALWAYS_ON)``. The SDK default
+        (``parentbased_always_on``) honours the caller's sampled flag, so a client sending
+        ``traceparent: ...-00`` can suppress the service's own tracing. This sampler keeps the
+        caller's trace ID for correlation but always samples. Set ``OTEL_TRACES_SAMPLER`` to
+        override.
     """
     global _tracing_enabled_override
 
@@ -114,6 +132,9 @@ def configure_tracing(
     if not _tracing_enabled_override:
         logger.info("OpenTelemetry traces are disabled, skipping setup")
         return
+
+    if not os.environ.get("OTEL_PROPAGATORS"):
+        propagate.set_global_textmap(TraceContextTextMapPropagator())
 
     if _tracer_provider_is_set():
         # A provider installed by something else (e.g. the `opentelemetry-instrument`
@@ -125,9 +146,14 @@ def configure_tracing(
             otlp_protocol, "OTEL_EXPORTER_OTLP_PROTOCOL", "http/protobuf", env_str
         )
 
-        provider = TracerProvider(
-            resource=Resource.create(attributes={"service.name": service_name})
-        )
+        resource = Resource.create(attributes={"service.name": service_name})
+        if os.environ.get("OTEL_TRACES_SAMPLER"):
+            provider = TracerProvider(resource=resource)
+        else:
+            provider = TracerProvider(
+                resource=resource,
+                sampler=ParentBased(root=ALWAYS_ON, remote_parent_not_sampled=ALWAYS_ON),
+            )
         provider.add_span_processor(
             BatchSpanProcessor(_span_exporter(endpoint, protocol))
         )

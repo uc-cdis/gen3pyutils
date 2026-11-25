@@ -370,3 +370,83 @@ def test_reset_sends_the_helpers_back_to_the_environment(monkeypatch):
         return 1
 
     assert traced(work) is not work
+
+
+# ---------------------------------------------------------------------------
+# Propagator defaults
+# ---------------------------------------------------------------------------
+
+
+def test_configure_tracing_sets_w3c_propagator_by_default(monkeypatch):
+    """configure_tracing replaces the global textmap with TraceContextTextMapPropagator.
+
+    The SDK default also includes BaggagePropagator, which forwards caller-supplied baggage
+    headers to every outbound request. W3C trace context carries no baggage.
+    """
+    from opentelemetry import propagate as otel_propagate
+    from opentelemetry.trace.propagation.tracecontext import TraceContextTextMapPropagator
+
+    monkeypatch.delenv("OTEL_PROPAGATORS", raising=False)
+    configure_tracing(FastAPI(), "test_service", instrumentors=())
+
+    assert isinstance(otel_propagate.get_global_textmap(), TraceContextTextMapPropagator)
+
+
+def test_configure_tracing_leaves_propagator_when_otel_propagators_is_set(monkeypatch):
+    """When OTEL_PROPAGATORS is set, configure_tracing does not touch the global textmap."""
+    from opentelemetry import propagate as otel_propagate
+
+    monkeypatch.setenv("OTEL_PROPAGATORS", "tracecontext,baggage")
+    before = otel_propagate.get_global_textmap()
+    configure_tracing(FastAPI(), "test_service", instrumentors=())
+
+    assert otel_propagate.get_global_textmap() is before
+
+
+# ---------------------------------------------------------------------------
+# Sampler defaults
+# ---------------------------------------------------------------------------
+
+
+def test_configure_tracing_uses_always_on_sampler_by_default(monkeypatch):
+    """configure_tracing installs a ParentBased always-on sampler.
+
+    The SDK default (parentbased_always_on) defers to the caller's traceparent flag, so a
+    client can suppress the service's own tracing. This sampler keeps the trace ID but always
+    samples.
+    """
+    from unittest.mock import patch
+
+    from opentelemetry.sdk.trace.sampling import ParentBased
+
+    monkeypatch.delenv("OTEL_TRACES_SAMPLER", raising=False)
+    with (
+        patch(
+            "gen3pyutils.observability.tracing._tracer_provider_is_set", return_value=False
+        ),
+        patch("gen3pyutils.observability.tracing.trace.set_tracer_provider"),
+        patch("gen3pyutils.observability.tracing.TracerProvider") as MockProvider,
+    ):
+        MockProvider.return_value.add_span_processor = lambda *a, **kw: None
+        configure_tracing(FastAPI(), "test_service", instrumentors=())
+
+    sampler = MockProvider.call_args.kwargs.get("sampler")
+    assert isinstance(sampler, ParentBased)
+
+
+def test_configure_tracing_omits_sampler_when_otel_traces_sampler_is_set(monkeypatch):
+    """When OTEL_TRACES_SAMPLER is set, configure_tracing defers to the SDK env-var handling."""
+    from unittest.mock import patch
+
+    monkeypatch.setenv("OTEL_TRACES_SAMPLER", "always_on")
+    with (
+        patch(
+            "gen3pyutils.observability.tracing._tracer_provider_is_set", return_value=False
+        ),
+        patch("gen3pyutils.observability.tracing.trace.set_tracer_provider"),
+        patch("gen3pyutils.observability.tracing.TracerProvider") as MockProvider,
+    ):
+        MockProvider.return_value.add_span_processor = lambda *a, **kw: None
+        configure_tracing(FastAPI(), "test_service", instrumentors=())
+
+    assert "sampler" not in MockProvider.call_args.kwargs
